@@ -1,0 +1,174 @@
+<mat-card *ngIf="userInfo">
+    <h2 class="main-title">Information of {{userInfo.firstName}} {{userInfo.lastName}}</h2>
+    <div style="height: 250px; width: 250px; margin: auto; margin-bottom: 30px;">
+        <img [src]="userInfo.imageUrl" alt="profile-image" style="height: 100%; width: 100%">
+    </div>
+    <div [ngStyle.lt-sm]="{'margin-left.px': 50}">
+        <div class="info-area name-area"
+            fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                <p class="title" fxFlex="1 1 30%">First Name</p> <span class="colon">:</span>
+                <p class="data">{{userInfo.firstName}}</p>
+            </div>
+            <div fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                <p class="title" fxFlex="1 1 30%">Last Name</p><span class="colon">:</span>
+                <p class="data">{{userInfo.lastName}}</p>
+            </div>
+        </div>
+        <div class="info-area profession-area"
+            fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                <p class="title" fxFlex="1 1 30%">Occupation</p><span class="colon">:</span>
+                <p class="data">{{userInfo.occupation}}</p>
+            </div>
+            <div fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                <p class="title" fxFlex="1 1 30%">Institute</p><span class="colon">:</span>
+                <p class="data">{{userInfo.institute}}</p>
+            </div>
+        </div>
+        <div class="info-area general-area"
+            fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                <p class="title" fxFlex="1 1 30%">Nationality</p><span class="colon">:</span>
+                <p class="data">{{userInfo.nationality}}</p>
+            </div>
+            <div fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                <p class="title" fxFlex="1 1 30%">Sex</p><span class="colon">:</span>
+                <p class="data">{{userInfo.gender}}</p>
+            </div>
+        </div>
+        <div class="info-area role-area"
+            fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                <p class="title" fxFlex="1 1 30%">Role</p><span class="colon">:</span>
+                <p class="data">{{userInfo.role}}</p>
+            </div>
+        </div>
+        <div fxLayout="column">
+            <h3 class="tags">Contacts</h3>
+            <div class="info-area contact-area"
+                fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column">
+                    <p class="title">Email</p>
+                    <ng-container *ngFor="let email of userInfo.contacts.publishedEmail; let i = index">
+                        <p class="data increased-line-height"> {{i+1}}. {{email}}</p>
+                    </ng-container>
+                </div>
+                <div fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%" fxLayout="column">
+                    <p class="title">Phone</p>
+                    <ng-container *ngFor="let phone of userInfo.contacts.publishedPhone; let i = index">
+                        <p class="data increased-line-height">{{i+1}}. {{phone}}</p>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        
+        <!------------------Private Contact Area start --------------------------->
+        <div class="info-area private-contact-area"
+            *ngIf="privateEmails.length || privatePhones.length"
+            fxLayout="column">
+            <h3 class="tags">Private Contacts</h3>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div *ngIf="privateEmails" fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%">
+                    <p class="title">Email</p>
+                    <ng-container *ngIf="privateEmails.length; else noneMessage">
+                        <ng-container *ngFor="let email of privateEmails; let i = index">
+                            <p class="data increased-line-height">{{i+1}}. {{email}}</p>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <div *ngIf="privateEmails" fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%">
+                    <p class="title">Phone</p>
+                    <ng-container *ngIf="privatePhones.length; else noneMessage">
+                        <ng-container *ngFor="let phone of privatePhones; let i = index">
+                            <p class="data increased-line-height">{{i+1}}. {{phone}}</p>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <!------------------Private Contact Area End --------------------------->
+
+            <!--------- address area start------------------>
+        <div fxLayout="column">
+            <h3 class="tags">Address</h3>
+            <div class="info-area address-area"
+                fxLayout="row wrap" fxLayoutAlign="space-between start" *ngIf="userInfo.address.village">
+                <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row" >
+                    <p class="title" fxFlex="1 1 30%">Road</p><span class="colon">:</span>
+                    <p class="data">{{userInfo.address.road}} </p>
+                </div>
+                <div fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                    <p class="title" fxFlex="1 1 30%">City</p><span class="colon">:</span>
+                    <p class="data">{{userInfo.address.village}}</p>
+                </div>
+            </div>
+            <div class="info-area address-area"
+                fxLayout="row wrap" fxLayoutAlign="space-between start" *ngIf="userInfo.address.village">
+                <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                    <p class="title" fxFlex="1 1 30%">Postal Name</p><span class="colon">:</span>
+                    <p class="data"> {{userInfo.address.postal}}</p>
+                </div>
+                <div fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                    <p class="title" fxFlex="1 1 30%">Post Code</p><span class="colon">:</span>
+                    <p class="data">{{userInfo.address.postCode}}</p>
+                </div>
+            </div>
+            <div class="info-area address-area"
+                fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                    <p class="title" fxFlex="1 1 30%">District</p><span class="colon">:</span>
+                    <p class="data"> {{userInfo.address.district}}</p>
+                </div>
+            </div>
+        </div>
+            <!-------- address area end----------------------->
+
+        <div fxLayout="column">
+
+        </div>
+        <div fxLayout="column" *ngIf="userInfo.username">
+            <h3 class="tags">Authentication Methods</h3>
+            <div class="info-area auth-area"
+                fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row">
+                    <p class="title" fxFlex="1 1 30%">Username</p><span class="colon">:</span>
+                    <p class="data"> {{userInfo.username}}</p>
+                </div>
+            </div>
+            <div class="info-area auth-area"
+                fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex="1 1 55%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row" *ngIf="userInfo.primaryEmail !== null">
+                    <p class="title" fxFlex="1 1 30%">Authentication Email</p><span class="colon">:</span>
+                    <ng-container *ngIf="userInfo.primaryEmail; else noneMessage">
+                        <p class="data"> {{userInfo.primaryEmail}}</p>
+                    </ng-container>
+                </div>
+                <div fxFlex="1 1 35%" fxFlex.lt-sm="1 1 100%" fxLayout="column" fxLayout.lt-sm="row" *ngIf="userInfo.primaryPhone !== null">
+                    <p class="title" fxFlex="1 1 30%">Authentication Phone</p><span class="colon">:</span>
+                    <ng-container *ngIf="userInfo.primaryPhone; else noneMessage">
+                        <p class="data"> {{userInfo.primaryPhone}}</p>
+                    </ng-container>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row">
+            <button
+                *ngIf="userInfo.username"
+                fxFlexOrder.lt-sm="2" 
+                mat-stroked-button 
+                [routerLink]="['/edit-info', userInfo.uid]" 
+                class="edit-button button">Edit Information</button>
+            <span fxFlex="1 1 auto" fxFlexOrder.lt-sm="3"></span>
+            <button fxFlexOrder.lt-sm="1" mat-stroked-button routerLink="/log" class="cancel-button button">Cancel</button>
+        </div>
+    </div>
+    
+</mat-card>
+
+
+<ng-template #noneMessage>
+    <p class="data" style="color: gray; font-size: large;">None</p>
+</ng-template>

@@ -1,0 +1,28 @@
+<mat-card class="mat-elevation-z8">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm">
+        <div fxLayout="row wrap" fxLayoutAlign="center start">
+            <mat-form-field class="form-field" fxFlex="1 1 100%">
+                <mat-label>Username/Email</mat-label>
+                <input matInput formControlName="username">
+            </mat-form-field>
+            <div fxFlex="1 1 100%" *ngIf="loginForm.get('username').touched && loginForm.get('username').invalid" class="error-message">Please Enter Username or Email to Login</div>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="center start">
+            <mat-form-field class="form-field" fxFlex="1 1 100%">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                </button>
+            </mat-form-field>
+            <div fxFlex="1 1 100%" *ngIf="loginForm.get('password').touched && loginForm.get('password').invalid" class="error-message">Please Enter Password</div>
+        </div>
+        <div fxLayout="row">
+            <span fxFlex="1 1 auto"></span>
+            <button class="submit-button" mat-stroked-button (click)="submit()">Login</button>
+        </div>
+    </form>
+    <p> Doesn't Have An Account? <span (click)="goRegister()">Register</span></p>
+</mat-card>

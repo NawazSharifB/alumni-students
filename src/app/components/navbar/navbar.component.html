@@ -1,0 +1,23 @@
+<div class="navbar-area">
+    <mat-toolbar
+        fxLayout="row">
+        <!-- <button routerLink="/log">log</button>
+        <button routerLink="/register">Register</button>
+        <button routerLink="/login">Login</button>
+        <button (click)="logout()">Logout</button> -->
+        <span class="logo">ALUMNUS</span>
+        <button mat-button mat-button
+            routerLink="/log" routerLinkActive="active-route">Log</button>
+        <div fxFlex="1 1 auto"></div>
+        <button mat-button 
+            *ngIf="!userLoggedIn"
+            routerLink="/register" routerLinkActive="active-route">Register</button>
+        <button mat-button 
+            *ngIf="!userLoggedIn"
+            routerLink="/login" routerLinkActive="active-route">Login</button>
+        <button mat-button 
+            *ngIf="userLoggedIn"
+            (click)="logout()">Logout</button>
+
+    </mat-toolbar>
+</div>

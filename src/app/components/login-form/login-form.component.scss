@@ -1,0 +1,38 @@
+mat-card {
+    max-width: 250px;
+    margin: auto;
+    // background: #fcfcf7;
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+
+    p {
+        text-align: center;
+        margin-top: 15px;
+        span {
+            font-size: large;
+            margin-left: 10px;
+            color: rgb(24, 24, 240);
+            cursor: pointer;
+            text-decoration: underline;
+
+            &:hover {
+                color: rgb(46, 46, 182);
+            }
+        }
+    }
+
+    .submit-button {
+        margin: 10px 5px 0px 0px;
+        background: #4dff4d;
+        color: #004d1a;
+    }
+
+    .error-message {
+        color: red;
+        font-size: small;
+        margin: auto;
+    }
+}

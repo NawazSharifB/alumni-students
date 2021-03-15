@@ -1,0 +1,457 @@
+
+  <mat-card *ngIf="userInfo">
+      <!----------------------------------Image Upload Area Start----------------------------------------------------------->
+      <div class="image-area"
+        fxLayout="row wrap"
+        fxLayout.lt-sm="column"
+        fxLayoutAlign="space-between start"
+        fxLayoutAlign.lt-sm="center center">
+
+        <div fxFlex="1 1 50%" fxFlex.lt-sm="1 1 250px" >
+            <div class="profile-image-area">
+                <img [src]="userInfo.imageUrl" *ngIf="userInfo.imageUrl">
+            </div>
+        </div>
+        <div class="image-input-area"
+            [ngStyle.lt-sm] ="{'max-height.px': 150}"
+            fxFlex="1 1 50%"
+            fxFlex.lt-sm="1 1 250px">
+
+            <mat-progress-bar 
+                style="margin-bottom: 20px"
+                mode="determinate"
+                *ngIf="imageUploadPercentage !== null"
+                [value]="imageUploadPercentage">
+            </mat-progress-bar>
+
+            <p style="color: green; text-align: center; font-weight: 600"
+                *ngIf="imageUploadCompleteMessage">
+                Image Upload Completed
+            </p>
+
+            <input #profileImage
+                type="file"
+                style="display: none;"
+                (change)="uploadImage($event, profileImage)">
+            <button class="upload-image-button"
+                type="button"
+                mat-stroked-button 
+                (click)="profileImage.click()">
+                Upload Image
+            </button> <span [ngStyle]="{'color': only2MbFileError ? 'red': 'black', 'font-weight': only2MbFileError ? 600 : 500}">{{fileName}}</span>
+            <p [ngStyle]="{'color': onlyImageAllowedError ? 'red': 'black', 'font-weight': onlyImageAllowedError ? 600 : 500}">
+                Please Upload Image Only</p>
+            <p [ngStyle]="{'color': only2MbFileError ? 'red': 'black', 'font-weight': only2MbFileError ? 600 : 500}">
+                Image Can't be more than 2 mb</p>
+        </div>
+  </div>
+
+<!----------------------------------Image Upload Area End-------------------------------------------------------------------->
+
+
+
+    <form [formGroup]="editInfoForm">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" (blur)="enhanceInput('firstName')">
+                </mat-form-field>
+                <div *ngIf="firstName.touched && firstName.invalid" class="input-error-message">
+                    <div *ngIf="firstName.errors.required">Required</div>
+                    <div *ngIf="firstName.errors.minlength">Too Short</div>
+                    <div *ngIf="firstName.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+            <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName" (blur)="enhanceInput('lastName')">
+                </mat-form-field>
+                <div *ngIf="lastName.touched && lastName.invalid" class="input-error-message">
+                    <div *ngIf="lastName.errors.required">Required</div>
+                    <div *ngIf="lastName.errors.minlength">Too Short</div>
+                    <div *ngIf="lastName.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%">
+                <mat-form-field class="form-field">
+                    <mat-label>Occupation</mat-label>
+                    <input matInput formControlName="occupation" (blur)="enhanceInput('occupation')">
+                </mat-form-field>
+                <div *ngIf="occupation.touched && occupation.invalid" class="input-error-message">
+                    <div *ngIf="occupation.errors.required">Required</div>
+                    <!-- <div *ngIf="occupation.errors.minlength">Too Short</div> -->
+                    <div *ngIf="occupation.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+
+            <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>Institute</mat-label>
+                    <input matInput formControlName="institute" (blur)="enhanceInput('institute')">
+                </mat-form-field>
+                <div *ngIf="institute.touched && institute.invalid" class="input-error-message">
+                    <div *ngIf="institute.errors.required">Required</div>
+                    <div *ngIf="institute.errors.maclength">Too Long</div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>Nationality</mat-label>
+                    <input matInput formControlName="nationality" (blur)="enhanceInput('nationality')">
+                </mat-form-field>
+                <div *ngIf="nationality.touched && nationality.invalid" class="input-error-message">
+                    <div *ngIf="nationality.errors.required">Required</div>
+                    <div *ngIf="nationality.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+            <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>Gender</mat-label>
+                    <mat-select formControlName="gender">
+                        <mat-option value="">Select Sex</mat-option>
+                        <mat-option value="Male">male</mat-option>
+                        <mat-option value="Female">Female</mat-option>
+                        <mat-option value="Others">Others</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="gender.touched && gender.invalid" class="input-error-message">
+                    <div *ngIf="gender.errors.required">Required</div>
+                </div>
+            </div>
+        </div>
+        <!------------------------ Contanct form start---------------------------------------->
+        <div formGroupName="contacts" class="contact-fields-area parts-area">
+            <h2>Contact Details</h2>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div formArrayName="phone" fxFlex="1 1 46%" fxFlex.lt-md="1 1 100%" [ngStyle]="{'margin-top.px': 20}">
+                    <h3>Phone Number</h3>
+                    <ng-container *ngFor="let pNumber of phone.controls; let i = index">
+                        <div fxLayout="row">
+                            <button class="form-field-cancel"
+                                [disabled]="phone.length === 1"
+                                type="button"
+                                (click)="cancelPhone(i)"
+                                mat-icon-button><mat-icon>cancel</mat-icon></button>
+                            <mat-form-field class="form-field" fxFlex="1 1 auto">
+                                <mat-label>Phone {{i + 1}}</mat-label>
+                                    <input matInput [formControlName]="i" type="number">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="phone.touched && phone.invalid" class="input-error-message"  style="margin-left: 60px">
+                            <div *ngIf="phone.get([i]).errors?.required">Required</div>
+                        </div>
+                    </ng-container>
+                    <button class="add-phone-button"
+                        [disabled]="phone.invalid || phone.length > 4"
+                        type="button"
+                        mat-stroked-button 
+                        (click)="addNewPhone()">
+                        Add New Phone Number
+                    </button>
+                </div>
+                <div 
+                    *ngIf="phone.length && phone.valid"
+                    fxFlex="1 1 46%" 
+                    fxFlex.lt-md="1 1 100%" 
+                    [ngStyle]="{'margin-top.px': 20}" 
+                    [ngStyle.lt-md]="{'margin-top.px': 50}">
+                    <h3>Published Phone Number</h3>
+                    <mat-form-field class="form-field">
+                        <mat-label>Publish Phone Number</mat-label>
+                        <mat-select formControlName="publishedPhone" multiple [value]="userInfo.contacts.publishedPhone">
+                          <mat-option *ngFor="let pNumber of phone.controls; let i = index" [value]="pNumber.value">{{i+1}}. {{pNumber.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="publishedPhone.touched && publishedPhone.invalid && publishedPhone.errors.required" class="input-error-message">
+                        At Least 1 Email Should Be Published
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div formArrayName="email" fxFlex="1 1 46%" fxFlex.lt-md="1 1 100%" [ngStyle]="{'margin-top.px': 20}" [ngStyle.lt-md]="{'margin-top.px': 50}">
+                    <h3>Email Address</h3>
+                    <ng-container *ngFor="let eAdd of email.controls; let j = index">
+                        <div fxLayout="row">
+                            <button class="form-field-cancel"
+                                [disabled]="email.length === 1"
+                                type="button"
+                                (click)="cancelEmail(j)"
+                                mat-icon-button><mat-icon>cancel</mat-icon></button>
+                            <mat-form-field  class="form-field">
+                                <mat-label>Email {{j + 1}}</mat-label>
+                                    <input matInput [formControlName]="j" type="email">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="email.get([j]).touched && email.get([j]).invalid" style="margin-left: 60px">
+                            <div *ngIf="email.get([j]).errors?.required" class="input-error-message">Required</div>
+                            <div *ngIf="email.get([j]).errors?.email" class="input-error-message">Invalid</div>
+                        </div>
+                    </ng-container>
+                    <button class="add-email-button"
+                        [disabled]="email.invalid || email.length > 4"
+                        type="button"
+                        mat-stroked-button
+                        (click)="addNewEmail()">
+                        Add New Email Address
+                    </button>
+                </div>
+                <div 
+                    *ngIf="email.length && email.valid"
+                    fxFlex="1 1 46%" 
+                    fxFlex.lt-md="1 1 100%" 
+                    [ngStyle]="{'margin-top.px': 20}" 
+                    [ngStyle.lt-md]="{'margin-top.px': 50}">
+                    <h3>Published Email Address</h3>
+                    <mat-form-field class="form-field">
+                        <mat-label>Publish Email Address</mat-label>
+                        <mat-select formControlName="publishedEmail" multiple [value]="userInfo.contacts.publishedEmail">
+                          <mat-option *ngFor="let eAdd of email.controls; let i = index" [value]="eAdd.value">{{i+1}}. {{eAdd.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="publishedEmail.touched && publishedEmail.invalid && publishedEmail.errors.required" class="input-error-message">
+                        At Least 1 Email Should Be Published
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!------------------------ Contanct form end---------------------------------------->
+
+        <!------------------------ Address form start---------------------------------------->
+        <div formGroupName="address" class="address-fields-area parts-area">
+            <h2>Address Details</h2>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Road</mat-label>
+                        <input matInput formControlName="road" (blur)="enhanceInput('road')">
+                    </mat-form-field>
+                    <div *ngIf="road.touched && road.invalid" class="input-error-message">
+                        <div *ngIf="road.errors.required">Required</div>
+                    </div>
+                </div>
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Village</mat-label>
+                        <input matInput formControlName="village" (blur)="enhanceInput('village')">
+                    </mat-form-field>
+                    <div *ngIf="village.touched && village.invalid" class="input-error-message">
+                        <div *ngIf="village.errors.required">Required</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Postal</mat-label>
+                        <input matInput formControlName="postal" (blur)="enhanceInput('postal')">
+                    </mat-form-field>
+                    <div *ngIf="postal.touched && postal.invalid" class="input-error-message">
+                        <div *ngIf="postal.errors.required">Required</div>
+                    </div>
+                </div>
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Post Code</mat-label>
+                        <input matInput formControlName="postCode">
+                    </mat-form-field>
+                    <div *ngIf="postCode.touched && postCode.invalid" class="input-error-message">
+                        <div *ngIf="postCode.errors.required">Required</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>District</mat-label>
+                        <input matInput formControlName="district" (blur)="enhanceInput('district')">
+                    </mat-form-field>
+                    <div *ngIf="district.touched && district.invalid" class="input-error-message">
+                        <div *ngIf="district.errors.required">Required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!------------------------ Address form end---------------------------------------->
+
+        <!-- --------------------Authentication form start----------------------------------------------->
+
+        <div class="authentication-fields-area parts-area">
+            <h2>Authentication Details</h2>
+
+            <div class="form-field role-area"
+                fxLayout="row wrap" 
+                fxLayoutAlign="start start"
+                *ngIf="isUserAdmin"
+                [ngStyle.lt-sm]="{'margin-bottom.px': 50}">
+                <h3 fxFlex="1 1 90px"> User Role:</h3>
+                <mat-radio-group class="form-field"
+                    fxFlex="1 1 calc(100%-110px)"
+                    fxFlex.lt-sm="1 1 260px"
+                   formControlName="role"
+                    aria-label="Select an option">
+                    <mat-radio-button value="admin">Admin</mat-radio-button>
+                    <mat-radio-button value="moderator">Moderator</mat-radio-button>
+                    <mat-radio-button value="user">User</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+
+            <div 
+                fxLayout="row wrap" 
+                fxLayoutAlign="space-between start">
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Username</mat-label>
+                        <input matInput formControlName="username">
+                    </mat-form-field>
+                    <div *ngIf="username.pending" class="pending-message">Checking Validity</div>
+                    <div *ngIf="username.touched && username.valid && username.value !== null" class="valid-message">Valid Username</div>
+                    <div *ngIf="username.errors?.unAvailable" class="input-error-message">Primary Email is Already in Use</div>
+                    <div *ngIf="username.touched && username.invalid" class="input-error-message">
+                        <div *ngIf="username.errors.required">Required</div>
+                        <div *ngIf="username.errors.minlength">Too Short</div>
+                        <div *ngIf="username.errors.maxlength">Too Long</div>
+                        <div *ngIf="username.errors.cannotContainSpace">{{username.errors.cannotContainSpace}}</div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <!-- <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <mat-form-field fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field">
+                    <mat-label>Authentication Email</mat-label>
+                    <input matInput formControlName="primaryEmail">
+                </mat-form-field>
+                <mat-form-field fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field">
+                    <mat-label>Authentication Phone</mat-label>
+                    <input matInput formControlName="primaryPhone">
+                </mat-form-field>
+            </div> -->
+
+
+            <div *ngIf="authService.userUid() === userInfo.uid"
+                
+                fxLayout="row wrap" 
+                fxLayoutAlign="space-between start">
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Password</mat-label>
+                        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+                        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <!-- <div *ngIf="editInfoForm.errors?.unMatchPassword" class="input-error-message">
+                        {{editInfoForm.errors.unMatchPassword}}
+                    </div> -->
+                    <div *ngIf="password.touched && password.invalid" class="input-error-message">
+                        <div *ngIf="password.errors.required">Required</div>
+                        <div *ngIf="password.errors.minlength">Too Short</div>
+                        <div *ngIf="password.errors.unMatchPassword">{{password.errors.unMatchPassword}}</div>
+                    </div>
+                </div>
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Re-write Password</mat-label>
+                        <input matInput formControlName="repassword" [type]="hidePassword ? 'password' : 'text'">
+                        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <!-- <div *ngIf="editInfoForm.errors?.unMatchPassword" class="input-error-message">
+                        {{editInfoForm.errors.unMatchPassword}}
+                    </div> -->
+                    <div *ngIf="repassword.touched && repassword.invalid" class="input-error-message">
+                        <div *ngIf="repassword.errors.required">Required</div>
+                        <div *ngIf="repassword.errors.unMatchPassword">{{repassword.errors.unMatchPassword}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class ="primary-phone-email-area"
+                fxLayout="row wrap" 
+                fxLayoutGap.gt-xs="2%"  
+                fxLayoutAlign="space-between start">
+                <div
+                    fxFlex="1 1 46%" 
+                    fxFlex.lt-sm="1 1 100%" 
+                    fxLayout="column">
+                    <h3>Pick Primary Phone Number</h3>
+                    <mat-radio-group 
+                        fxLayout="column"
+                        formControlName="primaryPhone">
+                        <mat-radio-button class="mat-radio-button" [value]="null">None</mat-radio-button>
+                        <ng-container *ngIf="phone.length && phone.valid">
+                            <mat-radio-button class="mat-radio-button" *ngFor="let phNum of phone.controls" [value]="phNum.value">
+                                {{phNum.value}}
+                            </mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                    <div>
+                        <div *ngIf="primaryPhone.pending" class="pending-message">Checking Validity</div>
+                        <div *ngIf="primaryPhone.touched && primaryPhone.valid && primaryPhone.value !== null"class="valid-message">Valid Primary Phone</div>
+                        <div *ngIf="primaryPhone.errors?.unAvailable" class="input-error-message">Primary Phone is Already in Use</div>
+                        <div *ngIf="primaryPhone.touched && primaryPhone.invalid" class="input-error-message">
+                            <!-- <div *ngIf="primaryPhone.errors.required">Primary Phone is Required</div> -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div
+                    fxFlex="1 1 46%" 
+                    fxFlex.lt-sm="1 1 100%"
+                    fxFlexAlign="center" 
+                    fxLayout="column" 
+                    [ngStyle.lt-sm] = "{'margin-top.px': 40}" >
+                    <h3>Pick Primary Email Address</h3>
+                    <mat-radio-group
+                        fxLayout="column"
+                        formControlName="primaryEmail">
+                        <mat-radio-button class="mat-radio-button" [value]="null" >None</mat-radio-button>
+                        <ng-container *ngIf="email.length && email.valid">
+                            <mat-radio-button class="mat-radio-button" *ngFor="let eAdd of email.controls" [value]="eAdd.value">
+                                {{eAdd.value}}
+                            </mat-radio-button>
+                        </ng-container>
+                    </mat-radio-group>
+                    <div *ngIf="primaryEmail.pending" class="pending-message">Checking Validity</div>
+                    <div *ngIf="primaryEmail.touched && primaryEmail.valid && primaryEmail.value !== null" class="valid-message">Valid Primary Email</div>
+                    <div *ngIf="primaryEmail.errors?.unAvailable" class="input-error-message">Primary Email is Already in Use</div>
+                    <div *ngIf="primaryEmail.touched && primaryEmail.invalid" class="input-error-message">
+                        <!-- <div *ngIf="primaryEmail.errors.required">Primary Email is Required</div> -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <p style="color: red; font-weight: bold; text-align: center;"
+            *ngIf="editInfoForm.invalid && invalidFormMessage">
+            Please Fillout The Form Properly
+        </p>
+        <p style="color: red; font-weight: bold; text-align: center;"
+            *ngIf="imageError">
+            Please Upload A Proper Image
+        </p>
+
+        <div fxLayout="row" class="submit-button-area">
+            <span fxFlex="1 1 auto"></span>
+            <button
+                [disabled]="editInfoForm.invalid || editInfoForm.pending"
+                mat-raised-button 
+                (click)="submit()">Submit</button>
+        </div>
+        
+        
+    </form>
+</mat-card>

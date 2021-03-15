@@ -1,0 +1,131 @@
+mat-card {
+    width: 90%;
+    margin: auto;
+    .form-field-area {
+        height: 70px;
+        max-height: 70px;
+    }
+    .form-field {
+        width: 100%;
+        height: 40px;
+    }
+    .input-error-message {
+        color: red;
+    }
+
+    .image-area {
+        min-height: 300px;
+    
+        .profile-image-area {
+            width: 250px;
+            height: 250px;
+            margin: auto;
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    
+        .image-input-area {
+            margin-top: 100px;
+            // height: 100px;
+        }
+    
+        .upload-image-button {
+            margin: 0px 10px 10px 0px;
+        }
+    
+        p {
+            margin-bottom: 5px;
+        }
+    }
+
+
+    .parts-area {
+        margin-top: 50px;
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    }
+
+    .primary-phone-email-area {
+        max-height: 500px;
+        margin-top: 20px;
+    }
+
+    .add-phone-button{
+        min-width: 100%;
+        text-align: center;
+        background: #0099ff;
+        color: white;
+    }
+    .add-email-button{
+        min-width: 100%;
+        text-align: center;
+        background: #1a75ff;
+        color: white;
+    }
+
+    .form-field-cancel {
+        margin-right: 20px;
+        margin-top: 5px;
+        color: red
+    }
+}
+
+.mat-radio-button {
+    margin: 5px;
+}
+
+.role-area {
+    margin: 20px 0px 10px 0px;
+    h3 {
+        color: gray;
+        width: 80px;
+        margin-right: 20px
+    }
+
+    mat-radio-group {
+        // margin-top: 5px;
+        mat-radio-button {
+            margin-right: 20px;
+        }
+    }
+}
+
+.pending-message {
+    color: rgb(183, 129, 11)
+}
+
+.valid-message {
+    color: rgb(6, 163, 6);
+}
+
+.submit-button-area {
+    margin-top: 30px;
+    button {
+        margin-right: 50px;
+    }
+}
+
+@media only screen and  (max-width: 600px) {
+
+    mat-card {
+        width: 100%;
+    }
+    .role-area {
+        margin: 20px 0px 20px 0px;
+        h3 {
+            width: 80px;
+            margin-right: 5px;
+        }
+    
+        mat-radio-group {
+            // margin-top: 5px;
+            mat-radio-button {
+                margin-right: 5px;
+            }
+        }
+    }
+}

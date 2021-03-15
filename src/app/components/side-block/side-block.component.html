@@ -1,0 +1,10 @@
+<div class="main-area" fxLayoutAlign="center center">
+    <div>
+        <div fxLayout="row" style="margin-bottom: 20px">
+            <span fxFlex="1 1 auto"></span>
+            <button type="button" mat-button (click)="cancelSideBlock()" style="color: red; margin-right: 10px">Cancel</button>
+        </div>
+        <p class="error-message" *ngIf="loginFailed">Invalid Username or Password</p>
+        <app-login-form (loginInfo)="loginInfo($event)" [loginFailed]="loginFailed"></app-login-form>
+    </div>
+</div>

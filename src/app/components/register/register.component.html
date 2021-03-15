@@ -1,0 +1,451 @@
+<mat-horizontal-stepper class="stepper-form" #stepper>
+    <mat-step [stepControl]="introForm" errorMessage="Invalid">
+      <form [formGroup]="introForm">
+        <ng-template matStepLabel>Primary Information Form</ng-template>
+
+<!----------------------------------Image Upload Area Start----------------------------------------------------------->
+        <div class="image-area"
+            fxLayout="row wrap"
+            fxLayoutAlign="space-between start"
+            fxLayoutAlign.lt-sm="center center">
+
+            <div fxFlex="1 1 50%" fxFlex.lt-sm="1 1 250px" >
+                <div class="profile-image-area">
+                    <img [src]="imageUrl" *ngIf="imageUrl">
+                </div>
+            </div>
+            <div 
+                fxFlex="1 1 50%"
+                fxFlex.lt-sm="100%"
+                fxFlexAlign="center">
+
+                <div class="image-input-area"
+                    [ngStyle.lt-sm]="{
+                        'width.px': 250,
+                        'margin': 'auto',
+                        'margin-top.px': 20,
+                        'margin-bottom.px': 20}">
+                    <mat-progress-bar 
+                        style="margin-bottom: 20px"
+                        mode="determinate"
+                        *ngIf="imageUploadPercentage !== null"
+                        [value]="imageUploadPercentage">
+                    </mat-progress-bar>
+
+                    <p style="color: green; text-align: center; font-weight: 600"
+                        *ngIf="imageUploadCompleteMessage">
+                        Image Upload Completed
+                    </p>
+
+
+                    <input #profileImage
+                        type="file"
+                        style="display: none;"
+                        (change)="uploadImage($event, profileImage)">
+                    <button class="upload-image-button"
+                        type="button"
+                         mat-stroked-button
+                        [disabled]="imageUploadButtonDisabled"
+                         (click)="profileImage.click()">
+                         Upload Image
+                    </button> <span [ngStyle]="{'color': only2MbFileError ? 'red': 'black', 'font-weight': only2MbFileError ? 600 : 500}">{{fileName}}</span>
+                    <p [ngStyle]="{'color': onlyImageAllowedError ? 'red': 'black', 'font-weight': onlyImageAllowedError ? 600 : 500}">
+                        Please Upload Image Only</p>
+                    <p [ngStyle]="{'color': only2MbFileError ? 'red': 'black', 'font-weight': only2MbFileError ? 600 : 500}">
+                        Image Can't be more than 2 mb</p>
+                </div>
+            </div>
+        </div>
+
+<!----------------------------------Image Upload Area End-------------------------------------------------------------------->
+
+
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>First Name</mat-label>
+                    <input 
+                        matInput
+                        formControlName="firstName"
+                        (blur)="enhanceInput('firstName')">
+                </mat-form-field>
+                <div *ngIf="firstName.touched && firstName.invalid" class="input-error-message">
+                    <div *ngIf="firstName.errors.required">Requird</div>
+                    <div *ngIf="firstName.errors.minlength">Too Short</div>
+                    <div *ngIf="firstName.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+            
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field" >
+                    <mat-label>Last Name</mat-label>
+                    <input 
+                        matInput
+                        formControlName="lastName"
+                        (blur)="enhanceInput('lastName')">
+                </mat-form-field>
+                <div *ngIf="lastName.touched && lastName.invalid" class="input-error-message">
+                    <div *ngIf="lastName.errors.required">Requird</div>
+                    <div *ngIf="lastName.errors.minlength">Too Short</div>
+                    <div *ngIf="lastName.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+            
+        </div> <!--first row name area-->
+        
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>Occupation</mat-label>
+                    <input 
+                        matInput
+                        formControlName="occupation"
+                        (blur)="enhanceInput('occupation')">
+                </mat-form-field>
+                <div *ngIf="occupation.touched && occupation.invalid" class="input-error-message">
+                    <div *ngIf="occupation.errors.required">Requird</div>
+                    <div *ngIf="occupation.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field  class="form-field">
+                    <mat-label>Institute</mat-label>
+                    <input 
+                        matInput
+                        formControlName="institute"
+                        (blur)="enhanceInput('institute')">
+                </mat-form-field>
+                <div *ngIf="institute.touched && institute.invalid" class="input-error-message">
+                    <div *ngIf="institute.errors.required">Requird</div>
+                    <div *ngIf="institute.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+        </div><!--second row occupation area-->
+
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field  class="form-field">
+                    <mat-label>Nationality</mat-label>
+                    <input 
+                        matInput
+                        formControlName="nationality"
+                        (blur)="enhanceInput('nationality')">
+                </mat-form-field>
+                <div *ngIf="nationality.touched && nationality.invalid" class="input-error-message">
+                    <div *ngIf="nationality.errors.required">Requird</div>
+                    <div *ngIf="nationality.errors.maxlength">Too Long</div>
+                </div>
+            </div>
+
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                <mat-form-field class="form-field">
+                    <mat-label>Sex</mat-label>
+                    <mat-select formControlName="gender">
+                        <mat-option selected>Select Sex</mat-option>
+                        <mat-option value="Male">Male</mat-option>
+                        <mat-option value="Female">Female</mat-option>
+                        <mat-option value="Others">Others</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="gender.touched && gender.invalid" class="input-error-message">
+                    Required
+                </div>
+            </div><!--third row nationality area-->
+        </div>
+        <div class ="stepper-switcher-area" fxLayout="row" fxLayoutAlign="center start">
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step><!--first stepper end-->
+
+    <mat-step [stepControl]="contactForm" errorMessage="Invalid">
+      <form [formGroup]="contactForm">
+        <ng-template matStepLabel>Contacts Form</ng-template>
+
+        <div class="contact-fields-area parts-area">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div formArrayName="phone" fxFlex="1 1 46%" fxFlex.lt-md="1 1 100%" [ngStyle]="{'margin-top.px': 20}">
+                    <h3>Phone Number</h3>
+                    <ng-container *ngFor="let pNumber of phone.controls; let i = index">
+                        <div fxLayout="row">
+                            <button class="form-field-cancel"
+                                [disabled]="phone.length === 1"
+                                type="button"
+                                (click)="cancelPhone(i)"
+                                mat-icon-button><mat-icon>cancel</mat-icon></button>
+                            <mat-form-field class="form-field" fxFlex="1 1 auto">
+                                <mat-label>Phone {{i + 1}}</mat-label>
+                                    <input matInput [formControlName]="i" type="number">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="phone.get([i]).touched && phone.get([i]).invalid" class="input-error-message">
+                            <div *ngIf="phone.get([i]).errors.required">At Least 1 Phone Number Required</div>
+                        </div>
+                    </ng-container>
+                    <button class="add-phone-button"
+                        style="margin-top: 10px"
+                        [disabled]="phone.invalid || phone.length > 4"
+                        type="button"
+                        mat-stroked-button 
+                        (click)="addNewPhone()">
+                        Add New Phone Number
+                    </button>
+                </div>
+                <div 
+                    *ngIf="phone.length && phone.valid"
+                    fxFlex="1 1 46%" 
+                    fxFlex.lt-md="1 1 100%" 
+                    [ngStyle]="{'margin-top.px': 20}" 
+                    [ngStyle.lt-md]="{'margin-top.px': 50}">
+                    <h3>Published Phone Number</h3>
+                    <mat-form-field class="form-field">
+                        <mat-label>Publish Phone Number</mat-label>
+                        <mat-select formControlName="publishedPhone" multiple>
+                          <mat-option *ngFor="let pNumber of phone.controls; let i = index" [value]="pNumber.value">{{i+1}}. {{pNumber.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="publishedPhone.touched && publishedPhone.invalid" class="input-error-message">
+                        <div *ngIf="publishedPhone.errors.required">At Least 1 Phone Number Should Be Published</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div formArrayName="email" fxFlex="1 1 46%" fxFlex.lt-md="1 1 100%" [ngStyle]="{'margin-top.px': 20}" [ngStyle.lt-md]="{'margin-top.px': 50}">
+                    <h3>Email Address</h3>
+                    <ng-container *ngFor="let eAdd of email.controls; let j = index">
+                        <div fxLayout="row">
+                            <button class="form-field-cancel"
+                                [disabled]="email.length === 1"
+                                type="button"
+                                (click)="cancelEmail(j)"
+                                mat-icon-button><mat-icon>cancel</mat-icon></button>
+                            <mat-form-field  class="form-field">
+                                <mat-label>Email {{j + 1}}</mat-label>
+                                    <input matInput [formControlName]="j">
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="email.get([j]).touched && email.get([j]).invalid" class="input-error-message">
+                            <div *ngIf="email.get([j]).errors.required">At Least 1 Email Required</div>
+                        </div>
+                        
+                    </ng-container>
+                    <button class="add-email-button"
+                        style="margin-top: 10px"
+                        [disabled]="email.invalid || email.length > 4"
+                        type="button"
+                        mat-stroked-button
+                        (click)="addNewEmail()">
+                        Add New Email Address
+                    </button>
+                </div>
+                <div 
+                    *ngIf="email.length && email.valid"
+                    fxFlex="1 1 46%" 
+                    fxFlex.lt-md="1 1 100%" 
+                    [ngStyle]="{'margin-top.px': 20}" 
+                    [ngStyle.lt-md]="{'margin-top.px': 50}">
+                    <h3>Published Email Address</h3>
+                    <mat-form-field class="form-field">
+                        <mat-label>Publish Email Address</mat-label>
+                        <mat-select formControlName="publishedEmail" multiple>
+                          <mat-option *ngFor="let eAdd of email.controls; let i = index" [value]="eAdd.value">{{i+1}}. {{eAdd.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="publishedEmail.touched && publishedEmail.invalid" class="input-error-message">
+                        <div *ngIf="publishedEmail.errors.required">At Least 1 Phone Number Should Be Published</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class ="stepper-switcher-area" fxLayout="row" fxLayoutAlign="center start">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="addressForm" errorMessage="Invalid">
+      <form [formGroup]="addressForm">
+        <ng-template matStepLabel>Address Form</ng-template>
+        <div fxLayout="column">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex="1 1 46%" fxFlex.lt-sm = "1 1 100%" fxLayout="column" class="form-field-area">
+                    <mat-form-field class="form-field">
+                        <mat-label>Road/Holding No.</mat-label>
+                        <input 
+                            matInput
+                            formControlName="road"
+                            (blur)="enhanceInput('road')">
+                    </mat-form-field>
+                    <div *ngIf="road.touched && road.invalid" class="input-error-message">
+                        <div *ngIf="road.errors.required">Required</div>
+                    </div>
+                </div>
+                <div fxFlex="1 1 46%" fxFlex.lt-sm = "1 1 100%" class="form-field-area">
+                    <mat-form-field>
+                        <mat-label>City/Town/Village Name</mat-label>
+                        <input 
+                            matInput
+                            formControlName="village"
+                            (blur)="enhanceInput('village')">
+                    </mat-form-field>
+                    <div *ngIf="village.touched && village.invalid">
+                        <div *ngIf="village.errors.required">Required</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <div fxFlex="1 1 46%" fxFlex.lt-sm = "1 1 100%" class="form-field-area">
+                    <mat-form-field>
+                        <mat-label>Postal</mat-label>
+                        <input 
+                            matInput
+                            formControlName="postal"
+                            (blur)="enhanceInput('postal')">
+                    </mat-form-field>
+                    <div *ngIf="postal.touched && postal.invalid" class="input-error-message">
+                        <div *ngIf="postal.errors.required">Required</div>
+                    </div>
+                </div>
+                <div fxFlex="1 1 46%" fxFlex.lt-sm = "1 1 100%" class="form-field-area">
+                    <mat-form-field>
+                        <mat-label>Post Code</mat-label>
+                        <input 
+                            matInput
+                            formControlName="postCode" type="number">
+                    </mat-form-field>
+                    <div *ngIf="postCode.touched && postCode.invalid" class="input-error-message">
+                        <div *ngIf="postCode.errors.invalid">Required</div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex ="1 1 46%" fxFlex.lt-sm="1 1 100%" class="form-field-area">
+                    <mat-form-field>
+                        <mat-label>District</mat-label>
+                        <input 
+                            matInput
+                            formControlName="district"
+                            (blur)="enhanceInput('district')">
+                    </mat-form-field>
+                    <div *ngIf="district.touched && district.invalid" class="input-error-message">
+                        <div *ngIf="district.errors.invalid">Required</div>
+                    </div>
+                </div>
+            </div>
+            <div class ="stepper-switcher-area" fxLayout="row" fxLayoutAlign="center start">
+                
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="authForm" errorMessage="Invalid">
+        <ng-template matStepLabel>Authentication Form</ng-template>
+      <form [formGroup]="authForm">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" fxLayout="column" class="form-field-area">
+                <mat-form-field class="form-field" >
+                    <mat-label>Input Username</mat-label>
+                    <input matInput formControlName="username">
+                </mat-form-field>
+                <div *ngIf="username.pending" class="pending-message">Checking Validity</div>
+                <div *ngIf="username.valid && username.value !== ''" class="valid-message">Valid Username</div>
+                <div *ngIf="username.touched && username.invalid" class="input-error-message">
+                    <div *ngIf="username.errors.required"> Username Required</div>
+                        <div *ngIf="username.errors.minlength">Too Short</div>
+                        <div *ngIf="username.errors.maxlength">Too Long</div>
+                        <div *ngIf="username.errors.cannotContainSpace">{{username.errors.cannotContainSpace}}</div>
+                    <div *ngIf="username.errors.unAvailable">Username Unavailable</div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" fxLayout="column" class="form-field-area">
+                <mat-form-field class="form-field">
+                <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+                    <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                        <mat-icon>{{hidePassword ? 'visibility': 'visibility_off'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+                <div *ngIf="password.invalid && password.touched" class="input-error-message">
+                    <div *ngIf="password.errors.required">Required</div>
+                    <div *ngIf="password.errors.minlength">Too Short</div>
+                    <div *ngIf="password.errors.unMatchPassword">{{password.errors.unMatchPassword}}</div>
+                </div>
+            </div>
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" fxLayout="column" class="form-field-area">
+                <mat-form-field class="form-field">
+                <mat-label>Re-enter Password</mat-label>
+                    <input matInput formControlName="repassword" [type]="hidePassword ? 'password' : 'text'">
+                    <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                        <mat-icon>{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+                <div *ngIf="repassword.invalid && repassword.touched" class="input-error-message">
+                    <div *ngIf="repassword.errors.required">Required</div>
+                    <div *ngIf="repassword.errors.unMatchPassword">{{repassword.errors.unMatchPassword}}</div>
+                </div>
+            </div>
+        </div>
+        <div class ="primary-phone-email-area" fxLayout="row wrap" fxLayoutGap.gt-xs="2%"  fxLayoutAlign="space-between start">
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" fxLayout="column">
+                <h3>Pick Primary Phone Number</h3>
+                <mat-radio-group 
+                    class="form-field"
+                    fxLayout="column"
+                    formControlName="primaryPhone">
+                    <mat-radio-button class="mat-radio-button" [value]="null">None</mat-radio-button>
+                    <ng-container *ngIf="phone.length && phone.valid">
+                        <mat-radio-button class="mat-radio-button" *ngFor="let phNum of phone.controls" [value]="phNum.value">
+                            {{phNum.value}}
+                        </mat-radio-button>
+                    </ng-container>
+                </mat-radio-group>
+                <div *ngIf="primaryPhone.pending" class="pending-message">Checking Validity</div>
+                <div *ngIf="primaryPhone.valid && primaryPhone.value !== null"class="valid-message">Valid Primary Phone</div>
+                <div *ngIf="primaryPhone.errors?.unAvailable">Primary Phone is Already in Use</div>
+                <div *ngIf="primaryPhone.touched && primaryPhone.invalid" class="input-error-message">
+                    <!-- <div *ngIf="primaryPhone.errors.required">Primary Phone is Required</div> -->
+                </div>
+            </div>
+            <div fxFlex="1 1 46%" fxFlex.lt-sm="1 1 100%" fxLayout="column" [ngStyle.lt-sm] = "{'margin-top.px': 40}">
+                <h3>Pick Primary Email Address</h3>
+                <mat-radio-group
+                    class="form-field"
+                    fxLayout="column"
+                    formControlName="primaryEmail">
+                    <mat-radio-button class="mat-radio-button" [value]="null" >None</mat-radio-button>
+                    <ng-container *ngIf="email.length && email.valid">
+                        <mat-radio-button class="mat-radio-button" *ngFor="let eAdd of email.controls" [value]="eAdd.value">
+                            {{eAdd.value}}
+                        </mat-radio-button>
+                    </ng-container>
+                </mat-radio-group>
+                <div *ngIf="primaryEmail.pending" class="pending-message">Checking Validity</div>
+                <div *ngIf="primaryEmail.valid && primaryEmail.value !== null" class="valid-message">Valid Primary Email</div>
+                <div *ngIf="primaryEmail.errors?.unAvailable">Primary Email is Already in Use</div>
+                <div *ngIf="primaryEmail.touched && primaryEmail.invalid" class="input-error-message">
+                    <!-- <div *ngIf="primaryEmail.errors.required">Primary Email is Required</div> -->
+                </div>
+            </div>
+        </div>
+        <p *ngIf="imageError" style="color: red; text-align: center;">Please Enter Proper Image</p>
+        <div class="stepper-switcher-area" fxLayout="row">
+            <button mat-button matStepperPrevious>Back</button>
+            <span fxFlex="1 1 auto"></span>
+            <button class="submit-button" 
+                mat-raised-button
+                [disabled]="authForm.invalid || !authForm.touched || introForm.invalid || !introForm.touched ||
+                contactForm.invalid || !contactForm.touched || addressForm.invalid || !addressForm.touched || 
+                authForm.pending"
+                (click)="submit()">submit</button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+

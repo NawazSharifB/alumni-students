@@ -1,0 +1,8 @@
+<div class="container">
+
+    <p class="login-failed-message" *ngIf="showLoginFaildMessage">Invalid Username or Password</p>
+    
+    <div class="login-form">
+        <app-login-form (loginInfo)="loginInfo($event)" [loginFailed]="showLoginFaildMessage" ></app-login-form>
+    </div>
+</div>

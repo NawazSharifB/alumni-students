@@ -1,0 +1,24 @@
+
+<div class="navbar-area">
+    <app-navbar></app-navbar>
+</div>
+
+<div class="router-outlet-area">
+    <router-outlet></router-outlet>
+</div>
+
+
+
+
+
+<div *ngIf="showPageBlocker || showSideBlock" class="page-blocker">
+    <mat-spinner *ngIf="showPageBlocker" style="margin: auto; margin-top: 200px"></mat-spinner>
+</div>
+<div class="side-block" [ngStyle]="{'width.px': showSideBlock ? 300 : 0}">
+    <app-side-block *ngIf="showSideBlock"></app-side-block>
+</div>
+
+
+
+
+
